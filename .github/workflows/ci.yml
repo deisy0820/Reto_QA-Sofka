@@ -11,9 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Hacer checkout del código
       - name: Checkout del código
         uses: actions/checkout@v3
 
+      # 2. Cachear dependencias Maven para acelerar builds
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -22,40 +24,45 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      # 3. Configurar Java 11
       - name: Configurar Java
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
 
+      # 4. Instalar dependencias y compilar
       - name: Instalar dependencias y compilar
         run: mvn clean install -DskipTests
 
+      # 5. Ejecutar tests UI + API en BrowserStack
       - name: Ejecutar tests UI + API
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: mvn test
 
+      # 6. Generar reportes Serenity
       - name: Generar reportes Serenity
         run: mvn serenity:aggregate
 
+      # 7. Guardar reportes como artefactos
       - name: Guardar reportes
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: serenity-report
           path: target/site/serenity/
 
+      # 8. Guardar screenshots
       - name: Guardar screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: target/site/serenity/screenshots/
 
+      # 9. Guardar logs (opcional)
       - name: Guardar logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logs
           path: target/logs/
-
-
