@@ -11,28 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Hacer checkout del código
+      # 1. Checkout del código
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 2. Cachear dependencias Maven
+      # 2. Cache Maven dependencies Web
       - name: Cache Maven dependencies Web
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-web-${{ hashFiles('**/automatizacion-web/pom.xml') }}
+          key: ${{ runner.os }}-maven-web-${{ hashFiles('RetoSofka/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-web-
 
+      # 3. Cache Maven dependencies API
       - name: Cache Maven dependencies API
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-api-${{ hashFiles('**/automatizacion-api/pom.xml') }}
+          key: ${{ runner.os }}-maven-api-${{ hashFiles('RetoApi/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-api-
 
-      # 3. Configurar Java 11
+      # 4. Configurar Java 11
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
@@ -42,69 +43,68 @@ jobs:
       # -------------------------
       # Proyecto Web
       # -------------------------
-      - name: Compilar automatización Web
+      - name: Compilar Web
         run: mvn clean install -DskipTests
-        working-directory: ./automatizacion-web
+        working-directory: RetoSofka
 
-      - name: Ejecutar tests UI
+      - name: Ejecutar tests Web
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: mvn test -Dmaven.test.failure.ignore=true
-        working-directory: ./automatizacion-web
+        working-directory: RetoSofka
 
       - name: Generar reportes Serenity Web
         run: mvn serenity:aggregate
-        working-directory: ./automatizacion-web
+        working-directory: RetoSofka
 
       - name: Guardar reportes Web
         uses: actions/upload-artifact@v4
         with:
           name: serenity-report-web
-          path: automatizacion-web/target/site/serenity/
+          path: RetoSofka/target/site/serenity/
 
       - name: Guardar screenshots Web
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-web
-          path: automatizacion-web/target/site/serenity/screenshots/
+          path: RetoSofka/target/site/serenity/screenshots/
+
+      - name: Guardar logs Web
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-web
+          path: RetoSofka/target/logs/
 
       # -------------------------
       # Proyecto API
       # -------------------------
-      - name: Compilar automatización API
+      - name: Compilar API
         run: mvn clean install -DskipTests
-        working-directory: ./automatizacion-api
+        working-directory: RetoApi
 
       - name: Ejecutar tests API
         run: mvn test -Dmaven.test.failure.ignore=true
-        working-directory: ./automatizacion-api
+        working-directory: RetoApi
 
       - name: Generar reportes Serenity API
         run: mvn serenity:aggregate
-        working-directory: ./automatizacion-api
+        working-directory: RetoApi
 
       - name: Guardar reportes API
         uses: actions/upload-artifact@v4
         with:
           name: serenity-report-api
-          path: automatizacion-api/target/site/serenity/
+          path: RetoApi/target/site/serenity/
 
       - name: Guardar screenshots API
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-api
-          path: automatizacion-api/target/site/serenity/screenshots/
-
-      # 9. Guardar logs (opcional)
-      - name: Guardar logs Web
-        uses: actions/upload-artifact@v4
-        with:
-          name: logs-web
-          path: automatizacion-web/target/logs/
+          path: RetoApi/target/site/serenity/screenshots/
 
       - name: Guardar logs API
         uses: actions/upload-artifact@v4
         with:
           name: logs-api
-          path: automatizacion-api/target/logs/
+          path: RetoApi/target/logs/
