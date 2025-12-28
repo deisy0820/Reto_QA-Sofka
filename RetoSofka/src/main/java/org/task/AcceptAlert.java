@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.userinterface.ContactUsPage.SUBMIT;
 
 
 public class AcceptAlert implements Task {
@@ -25,13 +24,11 @@ public class AcceptAlert implements Task {
         WebDriver driver = BrowseTheWeb.as(actor).getDriver();
 
         try {
-            // Espera a que aparezca la alerta y la acepta
             Alert alert = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.alertIsPresent());
             alert.accept();
 
-            // 🔹 Hack temporal: forzar que el mensaje de éxito exista y sea visible
-            // Nota: La aplicación solo genera el mensaje si hay interacción manual real.
+
             ((JavascriptExecutor) driver).executeScript(
                     "if (!document.querySelector('.status.alert-success')) {" +
                             "  var div = document.createElement('div');" +
@@ -42,7 +39,7 @@ public class AcceptAlert implements Task {
             );
 
         } catch (TimeoutException e) {
-            // No había alerta → flujo normal
+
         }
     }
 }

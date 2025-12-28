@@ -16,8 +16,7 @@ import org.userinterface.ContactUsPage;
 
 import java.time.Duration;
 
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
-import static org.userinterface.ContactUsPage.SUBMIT;
+
 
 public class SubmissionResult implements Question<Boolean> {
 
@@ -31,7 +30,6 @@ public class SubmissionResult implements Question<Boolean> {
         WebDriver driver = BrowseTheWeb.as(actor).getDriver();
 
         try {
-            // Espera hasta 5-10 segundos a que el mensaje de éxito sea visible
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.visibilityOf(ContactUsPage.SUCCESS_MESSAGE.resolveFor(actor)));
             return true;

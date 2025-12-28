@@ -3,7 +3,6 @@ package task;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Post;
-import org.json.JSONObject;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 

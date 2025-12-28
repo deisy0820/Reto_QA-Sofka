@@ -13,10 +13,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
-        <serenity.version>3.9.8</serenity.version>
+        <serenity.version>3.9.7</serenity.version>
         <cucumber.version>7.19.0</cucumber.version>
         <restassured.version>5.4.0</restassured.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>serenity-releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
 
@@ -63,12 +74,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- BrowserStack Local -->
+        <dependency>
+            <groupId>com.browserstack</groupId>
+            <artifactId>browserstack-local-java</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
 
-            <!-- Compiler -->
+            <!-- Maven Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -79,7 +97,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Serenity Reports -->
+            <!-- Serenity Maven Plugin -->
             <plugin>
                 <groupId>net.serenity-bdd.maven.plugins</groupId>
                 <artifactId>serenity-maven-plugin</artifactId>
