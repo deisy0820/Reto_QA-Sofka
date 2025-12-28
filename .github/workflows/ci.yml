@@ -16,13 +16,21 @@ jobs:
         uses: actions/checkout@v4
 
       # 2. Cachear dependencias Maven
-      - name: Cache Maven dependencies
+      - name: Cache Maven dependencies Web
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-web-${{ hashFiles('**/automatizacion-web/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven-
+            ${{ runner.os }}-maven-web-
+
+      - name: Cache Maven dependencies API
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-api-${{ hashFiles('**/automatizacion-api/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-api-
 
       # 3. Configurar Java 11
       - name: Configurar Java
@@ -31,38 +39,72 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # 4. Instalar dependencias y compilar
-      - name: Instalar dependencias y compilar
+      # -------------------------
+      # Proyecto Web
+      # -------------------------
+      - name: Compilar automatización Web
         run: mvn clean install -DskipTests
+        working-directory: ./automatizacion-web
 
-      # 5. Ejecutar tests UI + API en BrowserStack (aunque fallen)
-      - name: Ejecutar tests UI + API
+      - name: Ejecutar tests UI
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: mvn test -Dmaven.test.failure.ignore=true
+        working-directory: ./automatizacion-web
 
-      # 6. Generar reportes Serenity
-      - name: Generar reportes Serenity
+      - name: Generar reportes Serenity Web
         run: mvn serenity:aggregate
+        working-directory: ./automatizacion-web
 
-      # 7. Guardar reportes como artefactos
-      - name: Guardar reportes
+      - name: Guardar reportes Web
         uses: actions/upload-artifact@v4
         with:
-          name: serenity-report
-          path: target/site/serenity/
+          name: serenity-report-web
+          path: automatizacion-web/target/site/serenity/
 
-      # 8. Guardar screenshots
-      - name: Guardar screenshots
+      - name: Guardar screenshots Web
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots
-          path: target/site/serenity/screenshots/
+          name: screenshots-web
+          path: automatizacion-web/target/site/serenity/screenshots/
 
-      # 9. Guardar logs
-      - name: Guardar logs
+      # -------------------------
+      # Proyecto API
+      # -------------------------
+      - name: Compilar automatización API
+        run: mvn clean install -DskipTests
+        working-directory: ./automatizacion-api
+
+      - name: Ejecutar tests API
+        run: mvn test -Dmaven.test.failure.ignore=true
+        working-directory: ./automatizacion-api
+
+      - name: Generar reportes Serenity API
+        run: mvn serenity:aggregate
+        working-directory: ./automatizacion-api
+
+      - name: Guardar reportes API
         uses: actions/upload-artifact@v4
         with:
-          name: logs
-          path: target/logs/
+          name: serenity-report-api
+          path: automatizacion-api/target/site/serenity/
+
+      - name: Guardar screenshots API
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-api
+          path: automatizacion-api/target/site/serenity/screenshots/
+
+      # 9. Guardar logs (opcional)
+      - name: Guardar logs Web
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-web
+          path: automatizacion-web/target/logs/
+
+      - name: Guardar logs API
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-api
+          path: automatizacion-api/target/logs/
