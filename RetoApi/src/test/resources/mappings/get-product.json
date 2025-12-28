@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/products/101"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 101,
+      "name": "Blue Top",
+      "price": 500
+    }
+  }
+}
