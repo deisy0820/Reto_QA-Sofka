@@ -11,11 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # -------------------------
       # 1. Checkout del código
+      # -------------------------
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 2. Cache Maven dependencies Web
+      # -------------------------
+      # 2. Cache Maven dependencies
+      # -------------------------
       - name: Cache Maven dependencies Web
         uses: actions/cache@v4
         with:
@@ -24,7 +28,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-web-
 
-      # 3. Cache Maven dependencies API
       - name: Cache Maven dependencies API
         uses: actions/cache@v4
         with:
@@ -33,7 +36,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-api-
 
-      # 4. Configurar Java 11
+      # -------------------------
+      # 3. Configurar Java 11
+      # -------------------------
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
@@ -59,18 +64,21 @@ jobs:
         working-directory: RetoSofka
 
       - name: Guardar reportes Web
+        if: ${{ always() && (hashFiles('RetoSofka/target/site/serenity/**') != '') }}
         uses: actions/upload-artifact@v4
         with:
           name: serenity-report-web
           path: RetoSofka/target/site/serenity/
 
       - name: Guardar screenshots Web
+        if: ${{ always() && (hashFiles('RetoSofka/target/site/serenity/screenshots/**') != '') }}
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-web
           path: RetoSofka/target/site/serenity/screenshots/
 
       - name: Guardar logs Web
+        if: ${{ always() && (hashFiles('RetoSofka/target/logs/**') != '') }}
         uses: actions/upload-artifact@v4
         with:
           name: logs-web
@@ -92,19 +100,23 @@ jobs:
         working-directory: RetoApi
 
       - name: Guardar reportes API
+        if: ${{ always() && (hashFiles('RetoApi/target/site/serenity/**') != '') }}
         uses: actions/upload-artifact@v4
         with:
           name: serenity-report-api
           path: RetoApi/target/site/serenity/
 
       - name: Guardar screenshots API
+        if: ${{ always() && (hashFiles('RetoApi/target/site/serenity/screenshots/**') != '') }}
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-api
           path: RetoApi/target/site/serenity/screenshots/
 
       - name: Guardar logs API
+        if: ${{ always() && (hashFiles('RetoApi/target/logs/**') != '') }}
         uses: actions/upload-artifact@v4
         with:
           name: logs-api
           path: RetoApi/target/logs/
+
