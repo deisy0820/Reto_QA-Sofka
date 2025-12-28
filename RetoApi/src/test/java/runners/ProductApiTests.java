@@ -10,6 +10,6 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/feature",
         glue = "stepdefinitions"
 )
-public class ProductApiRunner {
+public class ProductApiTests {
 }
 
