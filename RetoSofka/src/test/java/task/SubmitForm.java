@@ -1,4 +1,4 @@
-package org.task;
+package task;
 
 
 import net.serenitybdd.screenplay.Actor;
@@ -7,7 +7,7 @@ import net.serenitybdd.screenplay.Tasks;
 
 import net.serenitybdd.screenplay.actions.Click;
 
-import static org.userinterface.ContactUsPage.SUBMIT;
+import static userinterface.ContactUsPage.SUBMIT;
 
 
 public class SubmitForm implements Task {

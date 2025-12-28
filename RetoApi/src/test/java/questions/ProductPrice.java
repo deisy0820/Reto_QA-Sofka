@@ -1,9 +1,7 @@
 package questions;
 
 import net.serenitybdd.rest.SerenityRest;
-import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Question;
-import net.serenitybdd.screenplay.rest.questions.LastResponse;
 
 public class ProductPrice implements Question<Integer> {
 

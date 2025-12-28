@@ -1,4 +1,4 @@
-package org.task;
+package task;
 
 
 import net.serenitybdd.screenplay.Actor;
@@ -8,12 +8,12 @@ import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actions.Upload;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.userinterface.ContactUsPage;
+import userinterface.ContactUsPage;
 
 
 import java.nio.file.Paths;
 
-import static org.userinterface.ContactUsPage.MESSAGE;
+import static userinterface.ContactUsPage.MESSAGE;
 
 public class FillContactForm implements Task {
 

@@ -7,11 +7,13 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 
 import net.serenitybdd.screenplay.actions.Click;
-import org.config.BrowserStackDriver;
+import config.BrowserStackDriver;
 import org.openqa.selenium.WebDriver;
-import org.questions.SubmissionResult;
-import org.task.*;
-import org.userinterface.ContactUsPage;
+import questions.SubmissionResult;
+import task.FillContactForm;
+import task.OpenHome;
+import task.SubmitForm;
+import userinterface.ContactUsPage;
 
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
