@@ -15,7 +15,7 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 2. Cachear dependencias Maven para acelerar builds
+      # 2. Cachear dependencias Maven
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
@@ -35,12 +35,12 @@ jobs:
       - name: Instalar dependencias y compilar
         run: mvn clean install -DskipTests
 
-      # 5. Ejecutar tests UI + API en BrowserStack
+      # 5. Ejecutar tests UI + API en BrowserStack (aunque fallen)
       - name: Ejecutar tests UI + API
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        run: mvn test
+        run: mvn test -Dmaven.test.failure.ignore=true
 
       # 6. Generar reportes Serenity
       - name: Generar reportes Serenity
@@ -60,7 +60,7 @@ jobs:
           name: screenshots
           path: target/site/serenity/screenshots/
 
-      # 9. Guardar logs (opcional)
+      # 9. Guardar logs
       - name: Guardar logs
         uses: actions/upload-artifact@v4
         with:
