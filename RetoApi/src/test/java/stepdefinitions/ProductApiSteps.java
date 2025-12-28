@@ -2,29 +2,29 @@ package stepdefinitions;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
+
 import questions.LastResponseStatus;
+import questions.LastCreatedProductId;
 import questions.ProductName;
 import questions.ProductPrice;
 import task.CreateProduct;
 import task.GetProduct;
-import questions.LastCreatedProductId;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.*;
 
 public class ProductApiSteps {
-    private Actor usuario;
 
     @Before
     public void setTheStage() {
         OnStage.setTheStage(new Cast());
-
         OnStage.theActorCalled("Usuario API")
                 .whoCan(CallAnApi.at("http://localhost:8080"));
     }

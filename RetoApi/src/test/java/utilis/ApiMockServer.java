@@ -14,12 +14,12 @@ public class ApiMockServer {
         wireMockServer.stubFor(post(urlEqualTo("/products"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
-                        .withBody("{\"id\":123,\"name\":\"Test Product\",\"price\":100}")));
+                        .withBody("{\"id\":123,\"name\":\"Laptop\",\"price\":1200}")));
 
         wireMockServer.stubFor(get(urlMatching("/products/\\d+"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
-                        .withBody("{\"id\":123,\"name\":\"Test Product\",\"price\":100}")));
+                        .withBody("{\"id\":123,\"name\":\"Laptop\",\"price\":1200}")));
     }
 
     public static void stopServer() {
