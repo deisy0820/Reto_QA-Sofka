@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/feature/contact_us.feature",
         glue = "stedefinitions"
 )
-public class ContactUsRunner {
+public class ContactUsTests {
 }
 
 
