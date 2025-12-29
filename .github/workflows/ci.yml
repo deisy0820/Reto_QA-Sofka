@@ -36,9 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-api-
 
-      # -------------------------
-      # 3. Configurar Java 11
-      # -------------------------
+    
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
